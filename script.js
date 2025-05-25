@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let names = { name1: '', name2: '' };
   let score = null;
   let currentQuestionIndex = 0;
-  let visitorCount = 100000;
+  let visitorCount = 110000; // Start count at 110,000
   let visitorCountdownInterval = null;
 
 
@@ -106,16 +106,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Visitor Countdown Logic ---
   function updateVisitorCountdown() {
-    const minCount = 90000; // Soft floor for the countdown
-    if (visitorCount > minCount) {
-      const decrement = Math.floor(Math.random() * 3) + 1; // Decrease by 1, 2, or 3
-      visitorCount -= decrement;
-      if (visitorCount < minCount) {
-        visitorCount = minCount; // Ensure it doesn't dip below min in this step
+    const maxCount = 120000; // Soft ceiling for the countdown
+    if (visitorCount < maxCount) {
+      const increment = Math.floor(Math.random() * 3) + 1; // Increase by 1, 2, or 3
+      visitorCount += increment;
+      if (visitorCount > maxCount) {
+        visitorCount = maxCount; // Ensure it doesn't go above max in this step
       }
     }
-    // If count is at or below minCount, it will just display minCount or stop decrementing further.
-    // For a more advanced version, you could slow down the interval or decrement amount here.
+    // If count is at or above maxCount, it will just display maxCount or stop incrementing further.
     
     if (visitorCountdownContainer) {
          visitorCountdownContainer.innerHTML = `🔥 <strong class="text-red-500">${visitorCount.toLocaleString()}</strong> people are taking the test right now! Join them! ✨`;
@@ -144,6 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
     submitHeartIcon.innerHTML = ICONS.Heart('w-6 h-6');
     popupSparklesIcon.innerHTML = ICONS.Sparkles('w-5 h-5');
     
+    // Reset visitor count to its starting point when returning to home page
+    visitorCount = 110000; 
     initializeVisitorCountdown();
 
 
@@ -642,7 +643,7 @@ document.addEventListener('DOMContentLoaded', () => {
     names = { name1: '', name2: '' };
     score = null;
     currentQuestionIndex = 0;
-    visitorCount = 100000; // Reset visitor count for new session on home page
+    // visitorCount is reset in renderHomePage
     renderHomePage();
   }
 
