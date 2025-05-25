@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // --- Constants ---
   const APP_TITLE = "Viral Love Test";
-  const WEBSITE_URL = "yourwebsite.com"; // Replace with actual domain
+  const WEBSITE_URL = "https://love-game-self.vercel.app/"; // Replace with actual domain
 
   const QUIZ_QUESTIONS = [
     { id: 1, questionTextTemplate: "What does {name1} admire most about {name2}'s personality?", options: ["Kindness", "Humor", "Intelligence", "Adventurousness"] },
