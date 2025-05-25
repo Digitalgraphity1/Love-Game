@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const APP_TITLE = "Viral Love Test";
   const WEBSITE_URL = "yourwebsite.com"; // Replace with actual domain
 
-  const QUIZ_QUESTIONS = [
+  const QUIZ_QUESTIONS_POOL = [
+    // Original 10
     { id: 1, questionTextTemplate: "What does {name1} admire most about {name2}'s personality?", options: ["Kindness", "Humor", "Intelligence", "Adventurousness"] },
     { id: 2, questionTextTemplate: "{name2}, what is {name1}'s favorite shared memory with you?", options: ["A specific vacation", "A funny incident", "A quiet evening", "A big celebration"] },
     { id: 3, questionTextTemplate: "If {name1} could describe {name2} in one word, what would it be?", options: ["Amazing", "Supportive", "Inspiring", "MyEverything"] },
@@ -15,6 +16,47 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 8, questionTextTemplate: "What is {name2}'s dream travel destination to visit with {name1}?", options: ["Paris", "A tropical island", "Mountain retreat", "A bustling city"] },
     { id: 9, questionTextTemplate: "{name1}, what quality in {name2} makes you feel most loved and secure?", options: ["Loyalty", "Understanding", "Patience", "Affection"] },
     { id: 10, questionTextTemplate: "If your love story was a movie, {name2}, what genre would it be, starring {name1}?", options: ["Romantic Comedy", "Epic Romance", "Adventure", "Slice of Life"] },
+    // Added 40 more
+    { id: 11, questionTextTemplate: "{name1}, what's {name2}'s secret talent you find adorable?", options: ["Singing off-key", "Wiggling ears", "Impressive whistling", "Unique dance move"] },
+    { id: 12, questionTextTemplate: "If {name2} were an animal, what would {name1} say they'd be?", options: ["Loyal dog", "Cunning fox", "Graceful swan", "Playful otter"] },
+    { id: 13, questionTextTemplate: "What's a little quirk of {name1} that {name2} secretly loves?", options: ["Snorting when laughing", "Talking to plants", "Their messy handwriting", "Always losing keys"] },
+    { id: 14, questionTextTemplate: "{name2}, what's {name1}'s favorite way to de-stress after a long day?", options: ["Hot bath", "Listening to music", "Exercising", "Venting to you"] },
+    { id: 15, questionTextTemplate: "What color does {name1} think best represents {name2}'s spirit?", options: ["Sunny Yellow", "Calm Blue", "Passionate Red", "Mysterious Purple"] },
+    { id: 16, questionTextTemplate: "{name2}, what type of movie would {name1} choose for a cozy night in?", options: ["Action-packed thriller", "Heartwarming comedy", "Thought-provoking documentary", "Classic romance"] },
+    { id: 17, questionTextTemplate: "{name1}, what is {name2}'s most used emoji when texting you?", options: ["❤️", "😂", "😘", "😊"] },
+    { id: 18, questionTextTemplate: "What kind of gift from {name2} would make {name1} feel most understood?", options: ["Something handmade", "A practical item they need", "An experience together", "A luxurious treat"] },
+    { id: 19, questionTextTemplate: "{name1}, if {name2} was a dessert, what would they be?", options: ["Spicy chocolate cake", "Sweet vanilla ice cream", "Fruity sorbet", "Complex tiramisu"] },
+    { id: 20, questionTextTemplate: "What's {name2}'s favorite season, and why does {name1} think so?", options: ["Summer - for the sun", "Autumn - for the colors", "Winter - for coziness", "Spring - for new beginnings"] },
+    { id: 21, questionTextTemplate: "{name1}, what is one thing {name2} does that always makes you laugh?", options: ["Their silly jokes", "A particular face they make", "Their dance moves", "Mispronouncing a word"] },
+    { id: 22, questionTextTemplate: "{name2}, what is {name1}'s ideal morning routine?", options: ["Slow start with coffee", "Quick and efficient", "Workout session", "Sleeping in late"] },
+    { id: 23, questionTextTemplate: "If {name1} could have any superpower, which one would {name2} say they'd pick?", options: ["Flying", "Invisibility", "Telepathy", "Super strength"] },
+    { id: 24, questionTextTemplate: "What's a shared dream {name2} and {name1} often talk about?", options: ["Owning a home", "Traveling the world", "Starting a family", "A specific career goal"] },
+    { id: 25, questionTextTemplate: "{name1}, what is {name2}'s favorite type of music to listen to when happy?", options: ["Upbeat pop", "Chill lo-fi", "Rock anthems", "Classical music"] },
+    { id: 26, questionTextTemplate: "{name2}, how does {name1} show they care without saying 'I love you'?", options: ["Doing thoughtful chores", "Giving surprise gifts", "Being a good listener", "Physical affection"] },
+    { id: 27, questionTextTemplate: "{name1}, what is {name2}'s biggest pet peeve?", options: ["Loud chewing", "Being late", "Messiness", "Interrupting"] },
+    { id: 28, questionTextTemplate: "What is a skill {name2} has that {name1} really admires?", options: ["Cooking/Baking", "Playing an instrument", "Artistic talent", "Problem-solving"] },
+    { id: 29, questionTextTemplate: "{name1}, if you were stranded on a desert island, why would you want {name2} there?", options: ["Their survival skills", "Their calming presence", "Their humor", "Their resourcefulness"] },
+    { id: 30, questionTextTemplate: "{name2}, what is {name1}'s 'love language' primarily?", options: ["Words of Affirmation", "Acts of Service", "Receiving Gifts", "Quality Time / Physical Touch"] },
+    { id: 31, questionTextTemplate: "What's a TV show {name1} and {name2} can always agree to watch?", options: ["A gripping drama", "A hilarious sitcom", "A nature documentary", "A reality TV show"] },
+    { id: 32, questionTextTemplate: "{name2}, what is {name1}'s go-to karaoke song?", options: ["A power ballad", "A classic rock hit", "A pop diva anthem", "Something silly and fun"] },
+    { id: 33, questionTextTemplate: "{name1}, what's the first thing {name2} does in the morning?", options: ["Checks phone", "Makes coffee/tea", "Hits snooze multiple times", "Stretches dramatically"] },
+    { id: 34, questionTextTemplate: "If {name2} could only eat one cuisine for the rest of their life, what would {name1} say it is?", options: ["Italian", "Mexican", "Japanese", "Indian"] },
+    { id: 35, questionTextTemplate: "{name1}, what is {name2}'s most prized possession?", options: ["A sentimental gift", "A piece of tech", "A collection", "Something related to a hobby"] },
+    { id: 36, questionTextTemplate: "{name2}, what is {name1}'s idea of a perfect date?", options: ["Adventurous outing", "Romantic dinner", "Cozy night in", "Fun group activity"] },
+    { id: 37, questionTextTemplate: "{name1}, what is a book or movie that deeply impacted {name2}?", options: ["A classic novel", "A sci-fi epic", "A moving biography", "A philosophical film"] },
+    { id: 38, questionTextTemplate: "How does {name2} react when {name1} is feeling down?", options: ["Offers advice", "Gives space", "Provides comfort food/hugs", "Tries to make them laugh"] },
+    { id: 39, questionTextTemplate: "{name1}, what's a weird food combination that {name2} surprisingly enjoys?", options: ["Pickles and peanut butter", "Fries dipped in milkshake", "Pineapple on pizza", "Something you can't imagine"] },
+    { id: 40, questionTextTemplate: "What would {name2} say is {name1}'s most charming habit?", options: ["The way they smile", "How they listen intently", "Their infectious laugh", "Their generosity"] },
+    { id: 41, questionTextTemplate: "{name1}, what's an inside joke that only you and {name2} would understand?", options: ["A mispronounced word", "A funny travel story", "A quirky observation", "A shared embarrassing moment"] },
+    { id: 42, questionTextTemplate: "{name2}, what is {name1}'s favorite way to be creative?", options: ["Writing or journaling", "Drawing or painting", "Playing music", "DIY projects"] },
+    { id: 43, questionTextTemplate: "{name1}, if {name2} won the lottery, what's the first extravagant thing they'd buy?", options: ["A dream car", "A luxury vacation", "A mansion", "Invest it wisely (boring!)"] },
+    { id: 44, questionTextTemplate: "What is a non-physical trait of {name2} that {name1} finds most attractive?", options: ["Their intellect", "Their ambition", "Their empathy", "Their wit"] },
+    { id: 45, questionTextTemplate: "{name1}, what is {name2}'s 'spirit animal' according to you?", options: ["Wise owl", "Playful dolphin", "Majestic lion", "Free-spirited butterfly"] },
+    { id: 46, questionTextTemplate: "{name2}, what does {name1} do that shows they trust you completely?", options: ["Shares their deepest fears", "Lets you handle important tasks", "Is vulnerable with you", "Never doubts your intentions"] },
+    { id: 47, questionTextTemplate: "{name1}, what is {name2}'s favorite board game or card game?", options: ["A strategy game", "A party game", "A classic card game", "They dislike games"] },
+    { id: 48, questionTextTemplate: "What kind of compliment from {name2} makes {name1} blush the most?", options: ["About their looks", "About their intelligence", "About their kindness", "A very specific, personal one"] },
+    { id: 49, questionTextTemplate: "{name1}, what is a place {name2} feels most at peace?", options: ["In nature", "At home", "Near water", "In a bustling city cafe"] },
+    { id: 50, questionTextTemplate: "If your love story was a song, {name2}, what instrument would be the lead for {name1}'s part?", options: ["Passionate violin", "Soulful saxophone", "Steady bass guitar", "Energetic drums"] }
   ];
 
   const LOVE_SUGGESTIONS = [
@@ -42,7 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let names = { name1: '', name2: '' };
   let score = null;
   let currentQuestionIndex = 0;
-  let visitorCount = 110000; // Start count at 110,000
+  let selectedQuizQuestions = []; // Holds the 10 randomly selected questions for the current session
+  let visitorCount = 110000;
   let visitorCountdownInterval = null;
 
 
@@ -55,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const quizPage = document.getElementById('quiz-page');
   const resultPage = document.getElementById('result-page');
 
-  // Home Page Elements
   const nameForm = document.getElementById('name-form');
   const name1Input = document.getElementById('name1');
   const name2Input = document.getElementById('name2');
@@ -66,15 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const popupSparklesIcon = document.getElementById('popup-sparkles-icon');
   const visitorCountdownContainer = document.getElementById('visitor-countdown-container');
 
-
-  // Quiz Page Elements
   const progressBar = document.getElementById('progress-bar');
   const questionNumberElement = document.getElementById('question-number');
   const questionTextElement = document.getElementById('question-text');
   const optionsContainer = document.getElementById('options-container');
   const adBannerQuestionBottomContainer = document.getElementById('ad-banner-question-bottom');
 
-  // Result Page Elements
   const resultCongratsElement = document.getElementById('result-congrats');
   const resultScoreElement = document.getElementById('result-score');
   const resultMessageElement = document.getElementById('result-message');
@@ -95,27 +134,28 @@ document.addEventListener('DOMContentLoaded', () => {
   function showPage(pageId) {
     homePage.classList.add('hidden', 'animate-fadeIn');
     quizPage.classList.add('hidden', 'animate-fadeIn');
-    resultPage.classList.add('hidden', 'animate-fadeInUp'); // Different animation for result
+    resultPage.classList.add('hidden', 'animate-fadeInUp');
 
     if (pageId === 'home') homePage.classList.remove('hidden');
     else if (pageId === 'quiz') quizPage.classList.remove('hidden');
     else if (pageId === 'result') resultPage.classList.remove('hidden');
     currentPage = pageId;
-    window.scrollTo(0, 0); // Scroll to top on page change
+    window.scrollTo(0, 0);
+  }
+
+  function shuffleArray(array) {
+    const newArray = [...array]; // Create a copy to avoid modifying the original
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
   }
 
   // --- Visitor Countdown Logic ---
   function updateVisitorCountdown() {
-    const maxCount = 120000; // Soft ceiling for the countdown
-    if (visitorCount < maxCount) {
-      const increment = Math.floor(Math.random() * 3) + 1; // Increase by 1, 2, or 3
-      visitorCount += increment;
-      if (visitorCount > maxCount) {
-        visitorCount = maxCount; // Ensure it doesn't go above max in this step
-      }
-    }
-    // If count is at or above maxCount, it will just display maxCount or stop incrementing further.
-    
+    const increment = Math.floor(Math.random() * 3) + 1;
+    visitorCount += increment;
     if (visitorCountdownContainer) {
          visitorCountdownContainer.innerHTML = `🔥 <strong class="text-red-500">${visitorCount.toLocaleString()}</strong> people are taking the test right now! Join them! ✨`;
     }
@@ -123,18 +163,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function initializeVisitorCountdown() {
     if (visitorCountdownInterval) {
-      clearInterval(visitorCountdownInterval); // Clear existing interval if any
+      clearInterval(visitorCountdownInterval);
     }
-    // Initial display
     updateVisitorCountdown(); 
-    // Update every 2.5 seconds
     visitorCountdownInterval = setInterval(updateVisitorCountdown, 2500); 
   }
 
 
   // --- Page Rendering Functions ---
 
-  // HomePage Logic
   function renderHomePage() {
     showPage('home');
     name1Input.value = '';
@@ -143,46 +180,48 @@ document.addEventListener('DOMContentLoaded', () => {
     submitHeartIcon.innerHTML = ICONS.Heart('w-6 h-6');
     popupSparklesIcon.innerHTML = ICONS.Sparkles('w-5 h-5');
     
-    // Reset visitor count to its starting point when returning to home page
     visitorCount = 110000; 
     initializeVisitorCountdown();
 
-
     setTimeout(() => {
-      if (currentPage === 'home') { // Only show if still on home page
+      if (currentPage === 'home') {
           popupMessage.classList.remove('hidden');
       }
     }, 1500);
   }
 
-  // QuizPage Logic
+  function setupQuizQuestions() {
+    selectedQuizQuestions = shuffleArray(QUIZ_QUESTIONS_POOL).slice(0, 10);
+  }
+
   function renderQuizPage() {
     showPage('quiz');
+    setupQuizQuestions(); // Select 10 random questions
     currentQuestionIndex = 0;
     renderQuestion();
-    if (visitorCountdownInterval) { // Stop home page countdown when quiz starts
+    if (visitorCountdownInterval) {
         clearInterval(visitorCountdownInterval);
     }
   }
 
   function renderQuestion() {
-    if (currentQuestionIndex >= QUIZ_QUESTIONS.length) {
+    if (currentQuestionIndex >= selectedQuizQuestions.length) {
       handleQuizComplete();
       return;
     }
 
-    const question = QUIZ_QUESTIONS[currentQuestionIndex];
-    const progress = ((currentQuestionIndex + 1) / QUIZ_QUESTIONS.length) * 100;
+    const question = selectedQuizQuestions[currentQuestionIndex];
+    const progress = ((currentQuestionIndex + 1) / selectedQuizQuestions.length) * 100;
     progressBar.style.width = `${progress}%`;
 
-    questionNumberElement.textContent = `Question ${currentQuestionIndex + 1} of ${QUIZ_QUESTIONS.length}`;
+    questionNumberElement.textContent = `Question ${currentQuestionIndex + 1} of ${selectedQuizQuestions.length}`;
     
     const personalizedQuestion = question.questionTextTemplate
       .replace(/{name1}/g, capitalize(names.name1))
       .replace(/{name2}/g, capitalize(names.name2));
     questionTextElement.textContent = personalizedQuestion;
 
-    optionsContainer.innerHTML = ''; // Clear previous options
+    optionsContainer.innerHTML = '';
     question.options.forEach(option => {
       const button = document.createElement('button');
       button.className = "w-full text-left bg-pink-100 hover:bg-pink-400 hover:text-white text-pink-700 font-medium py-3 px-4 rounded-lg transition-all duration-200 ease-in-out shadow-sm hover:shadow-md text-lg";
@@ -191,14 +230,12 @@ document.addEventListener('DOMContentLoaded', () => {
       optionsContainer.appendChild(button);
     });
     
-    // Animation for question card
     const questionCardContainer = document.getElementById('question-card-container');
     questionCardContainer.classList.remove('opacity-0');
 
-    renderNewBottomQuestionAd(); // Load new ad for this question
+    renderNewBottomQuestionAd();
   }
 
-  // ResultPage Logic
   function renderResultPage() {
     showPage('result');
     const capName1 = capitalize(names.name1);
@@ -212,9 +249,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let message = "";
     if (score >= 95) message = "An absolutely perfect match! Your love story is one for the ages! 💕✨";
-    else if (score >= 90) message = "Wow! You're an incredibly compatible couple! Keep shining together! 🥰💖";
-    else if (score >= 85) message = "A fantastic connection! Your love is strong and beautiful! ❤️🌟";
-    else message = "Great score! You have a wonderful bond! Keep nurturing your love! 😊💞";
+    else if (score >= 85) message = "Wow! You're an incredibly compatible couple! Keep shining together! 🥰💖";
+    else if (score >= 70) message = "A fantastic connection! Your love is strong and beautiful! ❤️🌟";
+    else if (score >= 55) message = "Great score! You have a wonderful bond! Keep nurturing your love! 😊💞";
+    else message = "A promising start! Every great love story has its chapters. Keep exploring yours! 👍💖";
     resultMessageElement.textContent = message;
 
     suggestionsList.innerHTML = '';
@@ -229,13 +267,12 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCertificateDisplay(capName1, capName2, score);
   }
 
-  // --- Component-like Functions ---
 
   function renderNewBottomQuestionAd() {
     if (!adBannerQuestionBottomContainer) return;
 
-    adBannerQuestionBottomContainer.innerHTML = ''; // Clear previous ad
-    adBannerQuestionBottomContainer.className = "mt-6 flex justify-center items-center h-[60px] w-[468px] max-w-full mx-auto bg-gray-200/30 rounded"; // Basic styling for the ad container
+    adBannerQuestionBottomContainer.innerHTML = ''; 
+    adBannerQuestionBottomContainer.className = "mt-6 flex justify-center items-center h-[60px] w-[468px] max-w-full mx-auto bg-gray-200/30 rounded"; 
 
     const adDiv = document.createElement('div');
     adDiv.style.width = '468px'; 
@@ -626,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
         currentQuestionIndex++;
-        if (currentQuestionIndex < QUIZ_QUESTIONS.length) {
+        if (currentQuestionIndex < selectedQuizQuestions.length) {
             renderQuestion(); 
         } else {
             handleQuizComplete();
@@ -635,7 +672,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function handleQuizComplete() {
-    score = Math.floor(Math.random() * (100 - 80 + 1)) + 80; 
+    // Score will be between 40 and 100 (inclusive)
+    score = Math.floor(Math.random() * (100 - 40 + 1)) + 40; 
     renderResultPage();
   }
 
@@ -643,7 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
     names = { name1: '', name2: '' };
     score = null;
     currentQuestionIndex = 0;
-    // visitorCount is reset in renderHomePage
+    selectedQuizQuestions = []; // Clear selected questions
     renderHomePage();
   }
 
