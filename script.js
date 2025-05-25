@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let names = { name1: '', name2: '' };
   let score = null;
   let currentQuestionIndex = 0;
-  let adLoaded = false;
 
 
   // --- DOM Elements ---
@@ -70,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const questionNumberElement = document.getElementById('question-number');
   const questionTextElement = document.getElementById('question-text');
   const optionsContainer = document.getElementById('options-container');
-  const adBannerQuizContainer = document.getElementById('ad-banner-quiz');
+  const adBannerQuestionBottomContainer = document.getElementById('ad-banner-question-bottom');
 
   // Result Page Elements
   const resultCongratsElement = document.getElementById('result-congrats');
@@ -127,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showPage('quiz');
     currentQuestionIndex = 0;
     renderQuestion();
-    renderAdBanner(adBannerQuizContainer);
+    // The per-question ad is now handled in renderQuestion()
   }
 
   function renderQuestion() {
@@ -159,6 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Animation for question card
     const questionCardContainer = document.getElementById('question-card-container');
     questionCardContainer.classList.remove('opacity-0');
+
+    renderNewBottomQuestionAd(); // Load new ad for this question
   }
 
   // ResultPage Logic
@@ -194,40 +195,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Component-like Functions ---
 
-  function renderAdBanner(container) {
-    if (!container || adLoaded) return; // Load only once per container or globally
-    
-    container.innerHTML = ''; // Clear previous
-    container.className = "my-6 flex justify-center items-center h-[60px] w-[468px] max-w-full mx-auto bg-gray-200/50 rounded";
-    
+  function renderNewBottomQuestionAd() {
+    if (!adBannerQuestionBottomContainer) return;
+
+    adBannerQuestionBottomContainer.innerHTML = ''; // Clear previous ad
+    adBannerQuestionBottomContainer.className = "mt-6 flex justify-center items-center h-[60px] w-[468px] max-w-full mx-auto bg-gray-200/30 rounded"; // Basic styling for the ad container
+
     const adDiv = document.createElement('div');
-    adDiv.style.width = '468px';
+    // The ad script will control the size, but we can set a container size
+    adDiv.style.width = '468px'; 
     adDiv.style.height = '60px';
     adDiv.style.maxWidth = '100%';
 
     const atOptionsScript = document.createElement('script');
     atOptionsScript.type = 'text/javascript';
+    // IMPORTANT: The ad network's `atOptions` variable is global. 
+    // Re-declaring it might work if their script handles it, 
+    // or it might cause issues. Testing is key.
+    // A common practice for re-injecting such ads is to ensure their scripts can self-reinitialize.
     atOptionsScript.textContent = `
-      atOptions = {
-        'key' : '335dbfb16faf973bd2007ed03f552ceb',
-        'format' : 'iframe',
-        'height' : 60,
-        'width' : 468,
-        'params' : {}
-      };
+        atOptions = {
+            'key' : '45b75ea3cb6302192333a9c317574635',
+            'format' : 'iframe',
+            'height' : 60,
+            'width' : 468,
+            'params' : {}
+        };
     `;
     
     const invokeScript = document.createElement('script');
     invokeScript.type = 'text/javascript';
-    invokeScript.src = "//www.highperformanceformat.com/335dbfb16faf973bd2007ed03f552ceb/invoke.js";
-    invokeScript.async = true;
+    // Giving a unique src by appending a timestamp can sometimes help force a reload if caching is an issue.
+    // However, ad networks usually manage this.
+    invokeScript.src = "//www.highperformanceformat.com/45b75ea3cb6302192333a9c317574635/invoke.js";
+    invokeScript.async = true; // Load asynchronously
 
     adDiv.appendChild(atOptionsScript);
     adDiv.appendChild(invokeScript);
-    container.appendChild(adDiv);
-    
-    // adLoaded = true; // If you want ads to load only once EVER. 
-    // If per page, don't set this globally, manage per container or reset on play again.
+    adBannerQuestionBottomContainer.appendChild(adDiv);
   }
 
 
@@ -387,9 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    // Load fonts if needed for canvas (browser might do this automatically if used on page)
-    // For canvas, it's good to ensure fonts are loaded. This can be tricky.
-    // Simplest is to assume fonts used in HTML (Lobster, Georgia, Poppins) are available.
+    const padding = 30;
 
     const bgColorCenter = '#4a0e6c'; 
     const bgColorMid = '#2a0a4f';  
@@ -441,7 +444,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     drawShootingStar(ctx, canvasWidth * 0.8, canvasHeight * 0.2, 100, 135, majorStarColor, 'rgba(255, 235, 59, 0.5)', 'rgba(255, 235, 59, 0)');
 
-    const padding = 30;
     ctx.strokeStyle = borderColorOuter;
     ctx.lineWidth = 3;
     ctx.strokeRect(padding, padding, canvasWidth - 2 * padding, canvasHeight - 2 * padding);
@@ -453,11 +455,22 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.setLineDash([]);
 
     ctx.textAlign = 'center';
-    ctx.font = "bold 60px 'Lobster', cursive";
+    const titleText = "Our Love Story in the Stars";
+    let titleFontSize = 52; // Start with a desired size
+    // Max width for title: canvas width - (2 * outer padding) - (2 * inner border width) - (2 * some margin from inner border)
+    const maxTitleWidth = canvasWidth - 2 * (padding + 8 + 10); // 10px margin from inner border
+
+    ctx.font = `bold ${titleFontSize}px 'Lobster', cursive`;
+    // Dynamically adjust font size to fit
+    while (ctx.measureText(titleText).width > maxTitleWidth && titleFontSize > 30) { // Minimum font size of 30px
+        titleFontSize -= 2;
+        ctx.font = `bold ${titleFontSize}px 'Lobster', cursive`;
+    }
+
     ctx.fillStyle = titleColor;
     ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
     ctx.shadowBlur = 10; ctx.shadowOffsetX = 2; ctx.shadowOffsetY = 2;
-    ctx.fillText("Our Love Story in the Stars", canvasWidth / 2, 130);
+    ctx.fillText(titleText, canvasWidth / 2, 130);
     ctx.shadowColor = 'transparent';
 
     ctx.font = `normal ${name1.length + name2.length > 20 ? '48px' : '56px'} 'Georgia', serif`;
@@ -561,7 +574,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         context.fillText(line.trim(), x, y);
-        if (i < lines.length -1) y += lineHeight;
+        if (i < lines.length -1) y += lineHeight; // Add space only if there are more lines
     }
   }
 
@@ -588,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         currentQuestionIndex++;
         if (currentQuestionIndex < QUIZ_QUESTIONS.length) {
-            renderQuestion(); // This will remove opacity-0
+            renderQuestion(); // This will remove opacity-0 and load new ad
         } else {
             handleQuizComplete();
         }
@@ -604,7 +617,6 @@ document.addEventListener('DOMContentLoaded', () => {
     names = { name1: '', name2: '' };
     score = null;
     currentQuestionIndex = 0;
-    adLoaded = false; // Reset ad loaded flag if you want ads per session
     renderHomePage();
   }
 
