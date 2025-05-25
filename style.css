@@ -1,0 +1,56 @@
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.font-lobster {
+  font-family: 'Lobster', cursive;
+}
+.font-dancing-script {
+  font-family: 'Dancing Script', cursive;
+}
+.font-georgia {
+  font-family: 'Georgia', serif;
+}
+
+.love-animated-gradient-bg {
+  background: linear-gradient(-45deg, #FF6B6B, #FF4B5C, #FF87A0, #FFB6C1);
+  background-size: 400% 400%;
+  animation: loveGradient 15s ease infinite;
+}
+
+@keyframes loveGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Ensure smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Page transition animations (can be enhanced) */
+.animate-fadeIn { animation: fadeIn 1s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.animate-slideInFromRight { animation: slideInFromRight 0.5s ease-out; }
+@keyframes slideInFromRight { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
+
+.animate-fadeInUp { animation: fadeInUp 0.8s ease-out; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.animate-pulseScore { animation: pulseScore 1.5s infinite ease-in-out; }
+@keyframes pulseScore { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+/* Helper for hidden sections */
+.hidden {
+  display: none !important;
+}
+
+/* Text shadow for main title */
+.text-shadow-lg {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}

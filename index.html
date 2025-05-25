@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viral Love Test Game</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@400;600;700&family=Dancing+Script:wght@700&family=Georgia&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0"
+  }
+}
+</script>
+</head>
+<body class="love-animated-gradient-bg">
+  <div class="min-h-screen text-white flex flex-col items-center justify-center p-4 selection:bg-pink-300 selection:text-pink-900">
+    <header class="text-center mb-8 mt-4">
+      <h1 id="app-title" class="text-5xl md:text-6xl font-lobster text-shadow-lg shadow-black/30">Viral Love Test</h1>
+    </header>
+
+    <main id="app-main" class="w-full max-w-2xl bg-white/20 backdrop-blur-md shadow-2xl rounded-xl p-6 md:p-10 text-gray-800">
+      <!-- Home Page Section -->
+      <section id="home-page" class="flex flex-col items-center text-center">
+        <div id="popup-message" class="fixed top-5 right-5 bg-pink-500 text-white p-4 rounded-lg shadow-xl z-50 hidden animate-slideInFromRight">
+          <p class="flex items-center">
+            <span id="popup-sparkles-icon" class="mr-2 animate-pulse"></span> 10,000+ couples have tried this today!
+          </p>
+          <button id="close-popup-btn" class="absolute top-1 right-2 text-white/70 hover:text-white font-bold">&times;</button>
+        </div>
+        <div id="home-heart-icon" class="mb-6 animate-pulse"></div>
+        <h2 class="text-3xl font-semibold mb-2 text-gray-700">Ready to Test Your Love?</h2>
+        <p class="text-lg text-gray-600 mb-8">Enter your names below and let the sparks fly!</p>
+        <form id="name-form" class="w-full space-y-6">
+          <div>
+            <label for="name1" class="block text-lg font-medium text-gray-700 mb-1">Your Name</label>
+            <input type="text" id="name1" placeholder="E.g., Romeo" class="w-full p-3 border border-pink-300 rounded-lg shadow-sm focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-lg text-gray-700 placeholder-gray-400" required />
+          </div>
+          <div>
+            <label for="name2" class="block text-lg font-medium text-gray-700 mb-1">Your Partner's Name</label>
+            <input type="text" id="name2" placeholder="E.g., Juliet" class="w-full p-3 border border-pink-300 rounded-lg shadow-sm focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-lg text-gray-700 placeholder-gray-400" required />
+          </div>
+          <button type="submit" class="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-bold py-4 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-150 text-xl flex items-center justify-center">
+            <span id="submit-heart-icon" class="mr-2"></span> Start Your Love Test
+          </button>
+        </form>
+      </section>
+
+      <!-- Quiz Page Section -->
+      <section id="quiz-page" class="hidden">
+        <div class="w-full mb-4">
+          <div class="text-center text-pink-700 font-semibold mb-1">Love Meter Progress</div>
+          <div class="w-full bg-pink-200 rounded-full h-4">
+            <div id="progress-bar" class="bg-gradient-to-r from-red-500 to-pink-500 h-4 rounded-full transition-all duration-500 ease-out" style="width: 0%;"></div>
+          </div>
+        </div>
+        <div id="question-card-container" class="transition-opacity duration-300 ease-in-out w-full">
+          <div class="p-6 bg-white/80 backdrop-blur-sm rounded-xl shadow-lg w-full">
+            <p id="question-number" class="text-sm text-pink-600 font-semibold mb-2"></p>
+            <h3 id="question-text" class="text-xl md:text-2xl font-semibold text-gray-800 mb-6 min-h-[60px] flex items-center"></h3>
+            <div id="options-container" class="space-y-3"></div>
+          </div>
+        </div>
+        <div id="ad-banner-quiz"></div>
+      </section>
+
+      <!-- Result Page Section -->
+      <section id="result-page" class="hidden flex flex-col items-center text-center">
+        <div id="result-sparkles-icon" class="mb-2"></div>
+        <h2 id="result-congrats" class="text-4xl font-lobster text-pink-600 mb-4"></h2>
+        <div class="my-6 p-8 bg-gradient-to-br from-red-100 via-pink-100 to-red-100 rounded-xl shadow-xl w-full">
+          <p class="text-2xl text-gray-700 mb-2">Your Love Score is...</p>
+          <p id="result-score" class="text-7xl font-bold text-red-500 my-4 animate-pulseScore"></p>
+          <p id="result-message" class="text-xl italic text-pink-700"></p>
+        </div>
+        <div class="my-8 p-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-lg w-full">
+          <h3 class="text-2xl font-semibold text-gray-700 mb-4 flex items-center justify-center">
+            <span id="suggestions-heart-icon" class="mr-2 text-red-500"></span> Sweet Suggestions to Strengthen Your Love:
+          </h3>
+          <ul id="suggestions-list" class="space-y-3 text-left text-gray-600 text-lg"></ul>
+        </div>
+        <div id="share-buttons-container"></div>
+        <div id="certificate-display-container"></div>
+        <button id="play-again-btn" class="mt-10 bg-gradient-to-r from-pink-500 to-orange-400 hover:from-pink-600 hover:to-orange-500 text-white font-bold py-3 px-8 rounded-lg shadow-lg text-lg transform hover:scale-105 transition-transform duration-150">
+          Play Again With New Names!
+        </button>
+      </section>
+    </main>
+
+    <footer class="mt-8 text-center text-sm text-white/70">
+      <p>&copy; <span id="current-year"></span> <span id="footer-app-title">Viral Love Test</span>. All rights reserved.</p>
+      <p>Spread the love! ❤️</p>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
