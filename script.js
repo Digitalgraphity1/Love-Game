@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // --- Constants ---
   const APP_TITLE = "Viral Love Test";
-  const WEBSITE_URL = "https://love-game-self.vercel.app/"; // Replace with actual domain
+  const WEBSITE_URL = "yourwebsite.com"; // Replace with actual domain
 
   const QUIZ_QUESTIONS = [
     { id: 1, questionTextTemplate: "What does {name1} admire most about {name2}'s personality?", options: ["Kindness", "Humor", "Intelligence", "Adventurousness"] },
@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let names = { name1: '', name2: '' };
   let score = null;
   let currentQuestionIndex = 0;
+  let visitorCount = 100000;
+  let visitorCountdownInterval = null;
 
 
   // --- DOM Elements ---
@@ -62,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const homeHeartIcon = document.getElementById('home-heart-icon');
   const submitHeartIcon = document.getElementById('submit-heart-icon');
   const popupSparklesIcon = document.getElementById('popup-sparkles-icon');
+  const visitorCountdownContainer = document.getElementById('visitor-countdown-container');
 
 
   // Quiz Page Elements
@@ -101,6 +104,34 @@ document.addEventListener('DOMContentLoaded', () => {
     window.scrollTo(0, 0); // Scroll to top on page change
   }
 
+  // --- Visitor Countdown Logic ---
+  function updateVisitorCountdown() {
+    const minCount = 90000; // Soft floor for the countdown
+    if (visitorCount > minCount) {
+      const decrement = Math.floor(Math.random() * 3) + 1; // Decrease by 1, 2, or 3
+      visitorCount -= decrement;
+      if (visitorCount < minCount) {
+        visitorCount = minCount; // Ensure it doesn't dip below min in this step
+      }
+    }
+    // If count is at or below minCount, it will just display minCount or stop decrementing further.
+    // For a more advanced version, you could slow down the interval or decrement amount here.
+    
+    if (visitorCountdownContainer) {
+         visitorCountdownContainer.innerHTML = `🔥 <strong class="text-red-500">${visitorCount.toLocaleString()}</strong> people are taking the test right now! Join them! ✨`;
+    }
+  }
+
+  function initializeVisitorCountdown() {
+    if (visitorCountdownInterval) {
+      clearInterval(visitorCountdownInterval); // Clear existing interval if any
+    }
+    // Initial display
+    updateVisitorCountdown(); 
+    // Update every 2.5 seconds
+    visitorCountdownInterval = setInterval(updateVisitorCountdown, 2500); 
+  }
+
 
   // --- Page Rendering Functions ---
 
@@ -112,6 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
     homeHeartIcon.innerHTML = ICONS.Heart('w-24 h-24 text-red-500');
     submitHeartIcon.innerHTML = ICONS.Heart('w-6 h-6');
     popupSparklesIcon.innerHTML = ICONS.Sparkles('w-5 h-5');
+    
+    initializeVisitorCountdown();
 
 
     setTimeout(() => {
@@ -126,7 +159,9 @@ document.addEventListener('DOMContentLoaded', () => {
     showPage('quiz');
     currentQuestionIndex = 0;
     renderQuestion();
-    // The per-question ad is now handled in renderQuestion()
+    if (visitorCountdownInterval) { // Stop home page countdown when quiz starts
+        clearInterval(visitorCountdownInterval);
+    }
   }
 
   function renderQuestion() {
@@ -202,17 +237,12 @@ document.addEventListener('DOMContentLoaded', () => {
     adBannerQuestionBottomContainer.className = "mt-6 flex justify-center items-center h-[60px] w-[468px] max-w-full mx-auto bg-gray-200/30 rounded"; // Basic styling for the ad container
 
     const adDiv = document.createElement('div');
-    // The ad script will control the size, but we can set a container size
     adDiv.style.width = '468px'; 
     adDiv.style.height = '60px';
     adDiv.style.maxWidth = '100%';
 
     const atOptionsScript = document.createElement('script');
     atOptionsScript.type = 'text/javascript';
-    // IMPORTANT: The ad network's `atOptions` variable is global. 
-    // Re-declaring it might work if their script handles it, 
-    // or it might cause issues. Testing is key.
-    // A common practice for re-injecting such ads is to ensure their scripts can self-reinitialize.
     atOptionsScript.textContent = `
         atOptions = {
             'key' : '45b75ea3cb6302192333a9c317574635',
@@ -225,10 +255,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const invokeScript = document.createElement('script');
     invokeScript.type = 'text/javascript';
-    // Giving a unique src by appending a timestamp can sometimes help force a reload if caching is an issue.
-    // However, ad networks usually manage this.
     invokeScript.src = "//www.highperformanceformat.com/45b75ea3cb6302192333a9c317574635/invoke.js";
-    invokeScript.async = true; // Load asynchronously
+    invokeScript.async = true;
 
     adDiv.appendChild(atOptionsScript);
     adDiv.appendChild(invokeScript);
@@ -456,13 +484,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ctx.textAlign = 'center';
     const titleText = "Our Love Story in the Stars";
-    let titleFontSize = 52; // Start with a desired size
-    // Max width for title: canvas width - (2 * outer padding) - (2 * inner border width) - (2 * some margin from inner border)
-    const maxTitleWidth = canvasWidth - 2 * (padding + 8 + 10); // 10px margin from inner border
+    let titleFontSize = 52; 
+    const maxTitleWidth = canvasWidth - 2 * (padding + 8 + 10); 
 
     ctx.font = `bold ${titleFontSize}px 'Lobster', cursive`;
-    // Dynamically adjust font size to fit
-    while (ctx.measureText(titleText).width > maxTitleWidth && titleFontSize > 30) { // Minimum font size of 30px
+    while (ctx.measureText(titleText).width > maxTitleWidth && titleFontSize > 30) { 
         titleFontSize -= 2;
         ctx.font = `bold ${titleFontSize}px 'Lobster', cursive`;
     }
@@ -574,7 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         context.fillText(line.trim(), x, y);
-        if (i < lines.length -1) y += lineHeight; // Add space only if there are more lines
+        if (i < lines.length -1) y += lineHeight; 
     }
   }
 
@@ -594,22 +620,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function handleAnswer(_answer) {
-    // Animation for question card fade out
     const questionCardContainer = document.getElementById('question-card-container');
     questionCardContainer.classList.add('opacity-0');
 
     setTimeout(() => {
         currentQuestionIndex++;
         if (currentQuestionIndex < QUIZ_QUESTIONS.length) {
-            renderQuestion(); // This will remove opacity-0 and load new ad
+            renderQuestion(); 
         } else {
             handleQuizComplete();
         }
-    }, 300); // Match CSS transition duration
+    }, 300); 
   }
 
   function handleQuizComplete() {
-    score = Math.floor(Math.random() * (100 - 80 + 1)) + 80; // Score 80-100
+    score = Math.floor(Math.random() * (100 - 80 + 1)) + 80; 
     renderResultPage();
   }
 
@@ -617,23 +642,21 @@ document.addEventListener('DOMContentLoaded', () => {
     names = { name1: '', name2: '' };
     score = null;
     currentQuestionIndex = 0;
+    visitorCount = 100000; // Reset visitor count for new session on home page
     renderHomePage();
   }
 
 
   // --- Initialization ---
   function init() {
-    // Set dynamic text
     appTitleElement.textContent = APP_TITLE;
     footerAppTitleElement.textContent = APP_TITLE;
     currentYearElement.textContent = new Date().getFullYear();
 
-    // Attach event listeners
     nameForm.onsubmit = handleStartQuiz;
     closePopupBtn.onclick = () => popupMessage.classList.add('hidden');
     playAgainBtn.onclick = handlePlayAgain;
     
-    // Start with the home page
     renderHomePage();
   }
 
